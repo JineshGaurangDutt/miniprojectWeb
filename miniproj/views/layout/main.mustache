@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/public/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>{{ title }}</h1>
+      <!-- Add navigation links, user authentication status, etc. as needed -->
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/profile">Profile</a></li>
+          <!-- Add more navigation links as needed -->
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      {{{ body }}}
+      <!-- The body content of individual pages will be injected here -->
+    </main>
+
+    <footer>
+      <!-- Add footer content as needed -->
+      <p> Restaurant Management System</p>
+    </footer>
+  </div>
+</body>
+
+</html>

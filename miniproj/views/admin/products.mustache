@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Products</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h2>Manage Products</h2>
+    <!-- Display product data and CRUD operations -->
+
+    <!-- Example: Display a table of products -->
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Product ID</th>
+          <th>Spiciness</th>
+          <th>Description</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example row, replace with dynamic data from the server -->
+        <tr>
+          <td>Product 1</td>
+          <td>$10.99</td>
+          <td>P12345</td>
+          <td>Mild</td>
+          <td>Product description</td>
+          <td>
+            <button>Edit</button>
+            <button>Delete</button>
+          </td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+
+    <!-- Example: Form for adding a new product -->
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="price">Price:</label>
+      <input type="text" id="price" name="price" required>
+
+      <label for="productId">Product ID:</label>
+      <input type="text" id="productId" name="productId" required>
+
+      <label for="spiciness">Spiciness:</label>
+      <input type="text" id="spiciness" name="spiciness" required>
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required></textarea>
+
+      <button type="submit">Add Product</button>
+    </form>
+  </div>
+</body>
+
+</html>

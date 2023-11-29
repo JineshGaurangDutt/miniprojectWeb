@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Data</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h2>Manage Data</h2>
+    <!-- Display and manage user data -->
+
+    <!-- Example: Display user data in a table with CRUD operations -->
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <!-- Add more columns as needed -->
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example row, replace with dynamic data from the server -->
+        <tr>
+          <td>John Doe</td>
+          <td>john@example.com</td>
+          <td>123-456-7890</td>
+          <!-- Add more cells as needed -->
+          <td>
+            <button>Edit</button>
+            <button>Delete</button>
+          </td>
+        </tr>
+        <!-- Add more rows as needed -->
+      </tbody>
+    </table>
+
+    <!-- Example: Form for adding a new data entry -->
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" required>
+
+      <!-- Add more input fields for additional data as needed -->
+
+      <button type="submit">Add Data</button>
+    </form>
+  </div>
+</body>
+
+</html>
