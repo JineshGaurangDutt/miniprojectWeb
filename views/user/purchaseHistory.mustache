@@ -1,0 +1,25 @@
+{{> layouts/layout}}
+
+<div class="ui container">
+  <h2 class="ui header">Purchase History</h2>
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>Order Date</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#orders}}
+      <tr>
+        <td>{{orderDate}}</td>
+        <td>{{productName}}</td>
+        <td>{{quantity}}</td>
+        <td>{{totalPrice}}</td>
+      </tr>
+      {{/orders}}
+    </tbody>
+  </table>
+</div>

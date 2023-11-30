@@ -1,0 +1,24 @@
+{{> layouts/layout}}
+
+<div class="ui container">
+  <h2 class="ui header">Manage Users</h2>
+  <table class="ui celled table">
+    <thead>
+      <tr><th>Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr></thead>
+    <tbody>
+      {{#users}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{email}}</td>
+        <td>
+          <button class="ui button blue">Edit</button>
+          <button class="ui button red">Delete</button>
+        </td>
+      </tr>
+      {{/users}}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,25 @@
+{{> layouts/layout}}
+
+<div class="ui container">
+  <h2 class="ui header">User Activity Report</h2>
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Last Active</th>
+        <th>Total Orders</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#users}}
+      <tr>
+        <td>{{name}}</td>
+        <td>{{email}}</td>
+        <td>{{lastActive}}</td>
+        <td>{{totalOrders}}</td>
+      </tr>
+      {{/users}}
+    </tbody>
+  </table>
+</div>
