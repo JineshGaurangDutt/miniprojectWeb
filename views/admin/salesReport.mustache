@@ -5,19 +5,21 @@
   <table class="ui celled table">
     <thead>
       <tr>
-        <th>Product Name</th>
-        <th>Units Sold</th>
-        <th>Total Sales</th>
+        <th>User</th>
+        <th>Order Date</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
       </tr>
     </thead>
     <tbody>
-      {{#products}}
+      {{#orders}}
       <tr>
-        <td>{{name}}</td>
-        <td>{{unitsSold}}</td>
-        <td>{{totalSales}}</td>
+        <td>{{user}}</td>
+        <td>{{orderDate}}</td>
+         <td>{{quantity}}</td>
+        <td>{{totalPrice}}</td>
       </tr>
-      {{/products}}
+      {{/orders}}
     </tbody>
   </table>
 </div>

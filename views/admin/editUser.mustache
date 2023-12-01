@@ -18,8 +18,9 @@
         <div class="field">
             <label>Role</label>
             <select name="role" class="ui dropdown">
-                <option value="user" {{#if user.role === 'user'}}selected{{/if}}>User</option>
-                <option value="admin" {{#if user.role === 'admin'}}selected{{/if}}>Admin</option>
+               
+                <option value="{{user.role}}" {{#selected}} selected="selected"{{/selected}} >{{user.role}}</option>
+
             </select>
         </div>
         <button class="ui button" type="submit">Update User</button>

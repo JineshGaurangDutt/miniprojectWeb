@@ -2,7 +2,7 @@
 
 <div class="ui container">
   <h2 class="ui header">Manage Products</h2>
-  <button class="ui button green" onclick="location.href='/admin/addProduct'">Add New Product</button>
+  <a class="ui button green" href="/admin/addProduct">Add New Product</a>
   <table class="ui celled table">
     <thead>
       <tr>
@@ -21,8 +21,8 @@
         <td>{{spiciness}}</td>
         <td>{{description}}</td>
         <td>
-          <button class="ui button blue" onclick="editProduct('{{_id}}')">Edit</button>
-          <button class="ui button red" onclick="deleteProduct('{{_id}}')">Delete</button>
+          <a class="ui button blue" href="/admin/editProduct/{{_id}}">Edit</a>
+          <a class="ui button red" href="/admin/deleteProduct/{{_id}}">Delete</a>
         </td>
       </tr>
       {{/products}}
@@ -30,27 +30,3 @@
   </table>
 </div>
 
-<script>
-  function editProduct(productId) {
-    // Replace with your actual logic for product editing
-    window.location.href = '/admin/editProduct/' + productId;
-  }
-
-  function deleteProduct(productId) {
-    // Implement the delete logic
-    // This is a basic example. In a real-world scenario, you'd want to make an API request to delete the product.
-    if (confirm('Are you sure you want to delete this product?')) {
-      fetch('/admin/deleteProduct/' + productId, { method: 'DELETE' })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            const row = document.getElementById('product-' + productId);
-            row.parentNode.removeChild(row);
-          } else {
-            alert('Error deleting product');
-          }
-        })
-        .catch(error => alert('Error deleting product'));
-    }
-  }
-</script>

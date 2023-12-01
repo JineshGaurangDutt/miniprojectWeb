@@ -19,9 +19,7 @@ const register = async (req, res) => {
             return res.redirect('/');
         }
 
-        // Hash password
-        // const hashedPassword = await bcrypt.hash(password, 10);
-
+    
         // Create new user with role
         const user = new User({ name, email, password, role });
         await user.save();
@@ -52,7 +50,7 @@ const login = async (req, res) => {
                 return res.status(400).send('Invalid Credentials');
             }
             else {
-                req.user=user;
+                req.user=user; // not working
                 if (user.role === 'admin') {
                     res.redirect('/admin/dashboard'); // Adjust this URL as needed
                 } else {

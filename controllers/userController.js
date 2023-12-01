@@ -21,7 +21,7 @@ const dashboard = async (req, res) => {
 // Get User Profile
 const getProfile = async (req, res) => {
     try {
-        const userId = req.user.userId;
+        const userId = req.user.id;
         const user = await User.findById(userId);
 
         if (!user) {
