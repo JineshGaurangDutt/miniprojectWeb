@@ -14,8 +14,9 @@
         <td>{{name}}</td>
         <td>{{email}}</td>
         <td>
-          <button class="ui button blue">Edit</button>
-          <button class="ui button red">Delete</button>
+          <!-- <button class="ui button blue onclick="location.href='/admin/editUser'">Edit</button> -->
+          <a href="/admin/editUser" class="ui button blue">edit</a>
+          <a href="/admin/deleteUser/{{id}}" class="ui button red">Delete</a>
         </td>
       </tr>
       {{/users}}

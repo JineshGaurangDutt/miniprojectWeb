@@ -72,7 +72,48 @@ const manageProducts = async (req, res) => {
     }
 };
 
-// Additional CRUD operations for products...
+
+// Add Product
+const addProduct = async (req, res) => {
+    try {
+        const { name, price, spiciness, description } = req.body;
+        const newProduct = new Product({ name, price, spiciness, description });
+        await newProduct.save();
+        res.redirect('/admin/manageProducts');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error adding product');
+    }
+};
+
+// Edit Product
+const editProduct = async (req, res) => {
+    try {
+        const { name, price, spiciness, description } = req.body;
+        const product = await Product.findById(req.params.id);
+        if (name) product.name = name;
+        if (price) product.price = price;
+        if (spiciness) product.spiciness = spiciness;
+        if (description) product.description = description;
+        await product.save();
+        res.redirect('/admin/manageProducts');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating product');
+    }
+};
+
+
+// Delete Product
+const deleteProduct = async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.redirect('/admin/manageProducts');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error deleting product');
+    }
+};
 
 // Generate Sales Report
 const salesReport = async (req, res) => {
@@ -113,7 +154,9 @@ module.exports = {
     editUser,
     deleteUser,
     manageProducts,
-    // Other product management methods...
+    addProduct,
+    editProduct,
+    deleteProduct,
     salesReport,
     userReport
 };
