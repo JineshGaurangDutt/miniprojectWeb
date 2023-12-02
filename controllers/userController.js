@@ -18,47 +18,78 @@ const dashboard = async (req, res) => {
     }
 };
 
-// Get User Profile
+// // Get User Profile
+// const getProfile = async (req, res) => {
+//     try {
+//         const userId = req.user;
+//         const user = await User.findById(user);
+
+//         if (!user) {
+//             return res.status(404).send('User not found');
+//         }
+
+//         res.render('user/profile', { user });
+//     } catch (error) {
+//         res.status(500).send('Server error');
+//     }
+// };
+
 const getProfile = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const user = await User.findById(userId);
+        const user = await User.findById(req.params.id);
+        console.log(user) 
 
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-
-        res.render('user/profile', { user });
+        // Implement logic for dashboard data if needed
+        res.render('user/profile',{user});
     } catch (error) {
         res.status(500).send('Server error');
     }
 };
 
-// Update User Profile
+// Update User
 const updateProfile = async (req, res) => {
     try {
-        const userId = req.user.userId;
-        const { name, email, password } = req.body;
-        const user = await User.findById(userId);
-
+        const { name, email, role } = req.body;
+        const user = await User.findById(req.params.id);
         if (!user) {
             return res.status(404).send('User not found');
         }
-
-        // Update fields
-        user.name = name || user.name;
-        user.email = email || user.email;
-
-        if (password) {
-            user.password = await bcrypt.hash(password, 10);
-        }
-
+        user.name = name;
+        user.email = email;
+        user.password = password;
+        user.role = role;
         await user.save();
-        res.send('Profile updated successfully');
+        res.redirect('/user/profile');
     } catch (error) {
-        res.status(500).send('Server error');
+        res.status(500).send('Error updating user');
     }
 };
+
+// // Update User Profile
+// const updateProfile = async (req, res) => {
+//     try {
+//         const userId = req.user.userId;
+//         const { name, email, password } = req.body;
+//         const user = await User.findById(userId);
+
+//         if (!user) {
+//             return res.status(404).send('User not found');
+//         }
+
+//         // Update fields
+//         user.name = name || user.name;
+//         user.email = email || user.email;
+
+//         if (password) {
+//             user.password = await bcrypt.hash(password, 10);
+//         }
+
+//         await user.save();
+//         res.send('Profile updated successfully');
+//     } catch (error) {
+//         res.status(500).send('Server error');
+//     }
+// };
 
 // Get User Purchase History
 const getPurchaseHistory = async (req, res) => {

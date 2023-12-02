@@ -57,7 +57,7 @@ const editUser = async (req, res) => {
         }
         user.name = name;
         user.email = email;
-        // user.password = password;
+        user.password = password;
         user.role = role;
         await user.save();
         res.redirect('/admin/manageUsers');

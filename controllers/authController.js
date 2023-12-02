@@ -19,7 +19,7 @@ const register = async (req, res) => {
             return res.redirect('/');
         }
 
-    
+
         // Create new user with role
         const user = new User({ name, email, password, role });
         await user.save();
@@ -50,11 +50,12 @@ const login = async (req, res) => {
                 return res.status(400).send('Invalid Credentials');
             }
             else {
-                req.user=user; // not working
+
+                // req.user=user; 
                 if (user.role === 'admin') {
-                    res.redirect('/admin/dashboard'); // Adjust this URL as needed
+                    res.render("admin/adminDashboard", { user: user }); // Adjust this URL as needed
                 } else {
-                    res.redirect('/user/dashboard'); // Adjust this URL as needed
+                    res.render("user/userDashboard", { user: user }); // Adjust this URL as needed
                 }
             }
 
