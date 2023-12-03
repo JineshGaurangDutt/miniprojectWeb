@@ -2,7 +2,7 @@
 
 <div class="ui container">
   <h2 class="ui header">Profile</h2>
-  <form class="ui form" action="/user/updateProfile" method="POST">
+  <form class="ui form" action="/user/Profile/{{user._id}}" method="POST">
     <div class="field">
       <label>Name</label>
       <input type="text" name="name" value="{{user.name}}">

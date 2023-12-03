@@ -50,7 +50,9 @@ const editUserPage = async (req, res) => {
 // Update User
 const editUser = async (req, res) => {
     try {
-        const { name, email, role } = req.body;
+        
+        const { name, email, password, role } = req.body;
+        console.log(req.params.id);
         const user = await User.findById(req.params.id);
         if (!user) {
             return res.status(404).send('User not found');
@@ -59,6 +61,7 @@ const editUser = async (req, res) => {
         user.email = email;
         user.password = password;
         user.role = role;
+        
         await user.save();
         res.redirect('/admin/manageUsers');
     } catch (error) {

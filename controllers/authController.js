@@ -25,7 +25,7 @@ const register = async (req, res) => {
         await user.save();
 
         // Redirect to login or other appropriate page
-        res.redirect('/common/login');
+        res.redirect('/common/login', { message: "User Registered successfully",} );
     } catch (error) {
         // res.status(500).send('Error in registration');
         res.redirect('/');
@@ -53,9 +53,9 @@ const login = async (req, res) => {
 
                 // req.user=user; 
                 if (user.role === 'admin') {
-                    res.render("admin/adminDashboard", { user: user }); // Adjust this URL as needed
+                    res.render("admin/adminDashboard", { user: user, message: "User logged in successfully" }); // Adjust this URL as needed
                 } else {
-                    res.render("user/userDashboard", { user: user }); // Adjust this URL as needed
+                    res.render("user/userDashboard", { user: user, message: "User logged in successfully" }); // Adjust this URL as needed
                 }
             }
 
@@ -70,7 +70,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     // Note: JWT logout is usually handled on the client side by removing the token from the client storage.
 
-    res.redirect('/common/login');
+    res.redirect('/common/login', { message: "User logged out successfully"});
 };
 
 module.exports = {
