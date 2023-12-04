@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Product = require('../models/product');
 const Order = require('../models/Order');
+const helpers = require('../utils/helpers');
 const bcrypt = require('bcrypt');
 
 // Admin Dashboard
@@ -164,6 +165,7 @@ const salesReport = async (req, res) => {
         );
         for(let o of orders){
             o.quantity= o.products.length
+            // o.orderDate = helpers.formatDate(o.orderDate)
         }
         res.render('admin/salesReport', { orders });
     } catch (error) {

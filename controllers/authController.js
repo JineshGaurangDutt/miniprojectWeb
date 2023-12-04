@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const { generateToken } = require('../utils/auth');
 // const jwt = require('jsonwebtoken');
 
 // Helper function to generate JWT token
@@ -40,6 +41,7 @@ const login = async (req, res) => {
 
         // Check if user exists
         const user = await User.findOne({ email });
+        console.log(user);
         if (!user) {
             return res.redirect('/');
         }
@@ -50,6 +52,8 @@ const login = async (req, res) => {
                 return res.status(400).send('Invalid Credentials');
             }
             else {
+                const token = generateToken(user);
+                req.session.user={...user, token};
 
                 // req.user=user; 
                 if (user.role === 'admin') {
@@ -69,8 +73,10 @@ const login = async (req, res) => {
 // User logout
 const logout = async (req, res) => {
     // Note: JWT logout is usually handled on the client side by removing the token from the client storage.
-
-    res.redirect('/common/login');
+    req.session.destroy((err)=>{
+        if(err) return;
+        res.redirect('/common/login');
+    });
 };
 
 module.exports = {

@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 const generateToken = (user) => {
     return jwt.sign(
-        { userId: user._id, role: user.role },
-        process.env.JWT_SECRET,
+        { id: user._id, role: user.role },
+        config.sessionSecret,
         { expiresIn: '1h' }
     );
 };
 
 const verifyToken = (token) => {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET);
+        return jwt.verify(token, config.sessionSecret);
     } catch (error) {
         return null;
     }

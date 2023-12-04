@@ -5,7 +5,7 @@ const session = require('express-session');
 const mustacheExpress = require('mustache-express');
 const path = require('path');
 const config = require('./config'); // Import the configuration file
-
+const auth = require('./utils/auth')
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
@@ -34,16 +34,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(session({
-  secret: 'yourSecretKey',
+  secret: config.sessionSecret,
   resave: false,
   saveUninitialized: true,
 }));
+const isAuthenticated = (req,res, next) => {
+    if(req.session.user) next();
+    else res.redirect("/common/login");
+
+}
+// app.use(isAuthenticated);
 
 // Using Routes
 app.use('/auth', authRoutes);
-app.use('/user', userRoutes);
-app.use('/admin', adminRoutes);
-app.use('/product', productRoutes);
+app.use('/user', isAuthenticated, userRoutes);
+app.use('/admin', isAuthenticated, adminRoutes);
+app.use('/product', isAuthenticated, productRoutes);
 
 // Home Route
 app.get('/', (req, res) => {
@@ -51,10 +57,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/common/login', (req, res) => {
-    res.render('common/login', {
-        // Pass any necessary data for the template
-        title: 'Login'
-    });
+    res.render('common/login');
 });
 
 app.get('/common/register', (req, res) => {
