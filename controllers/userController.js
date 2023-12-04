@@ -18,7 +18,7 @@ const dashboard = async (req, res) => {
     }
 };
 
-// Get User Profile
+// Get user Profile
 const getProfile = async (req, res) => {
     try {
         const userId = req.user;
@@ -34,21 +34,9 @@ const getProfile = async (req, res) => {
     }
 };
 
-// const getProfile = async (req, res) => {
-//     try {
-//         const user = await User.findById(req.params.id);
-
-
-//         // Implement logic for dashboard data if needed
-//         res.render('user/profile',{user});
-//     } catch (error) {
-//         res.status(500).send('Server error');
-//     }
-// };
-
 // Update profile
 const updateProfile = async (req, res) => {
-    console.log("hi")
+    
     try {
         const { name, email, password, role } = req.body;
         const user = await User.findById(req.params.id);
@@ -66,43 +54,18 @@ const updateProfile = async (req, res) => {
     }
 };
 
-// // Update User Profile
-// const updateProfile = async (req, res) => {
+
+// // Get User Purchase History
+// const getPurchaseHistory = async (req, res) => {
 //     try {
 //         const userId = req.user.userId;
-//         const { name, email, password } = req.body;
-//         const user = await User.findById(req.params.id);
+//         const orders = await Order.find({ user: userId }).populate('products.product');
 
-//         if (!user) {
-//             return res.status(404).send('User not found');
-//         }
-
-//         // Update fields
-//         user.name = name || user.name;
-//         user.email = email || user.email;
-
-//         if (password) {
-//             user.password = await bcrypt.hash(password, 10);
-//         }
-
-//         await user.save();
-//         res.send('Profile updated successfully');
+//         res.render('user/purchaseHistory', { orders });
 //     } catch (error) {
 //         res.status(500).send('Server error');
 //     }
 // };
-
-// Get User Purchase History
-const getPurchaseHistory = async (req, res) => {
-    try {
-        const userId = req.user.userId;
-        const orders = await Order.find({ user: userId }).populate('products.product');
-
-        res.render('user/purchaseHistory', { orders });
-    } catch (error) {
-        res.status(500).send('Server error');
-    }
-};
 
 
 
@@ -117,38 +80,44 @@ const viewProduct = async (req, res) => {
     }
 };
 
- // Buy a Product
- const buyProduct = async (req, res) => {
-
+// Buy a Product
+const buyProduct = async (req, res) => {
     try {
-        const { userId, products } = req.body; // products should be an array of { product, quantity }
-        let totalPrice = 0;
+        const productId = req.params.id;
+        const product = await Product.findById(productId);
 
-        // Calculate total price
-        for (let item of products) {
-            const product = await Product.findById(item.product);
-            totalPrice += product.price * item.quantity;
+        if (!product) {
+            return res.status(404).send('Product not found');
         }
 
+        // Assuming the user is logged in and their ID is stored in the session
+        // const userId = req.session.userId; // or however you store the user's ID
+        // const user = await User.findById(userId);
+
+        // if (!user) {
+        //     return res.status(404).send('User not found');
+        // }
+
         const order = new Order({
-            userId,
-            products,
-            totalPrice
+            products: [{
+                product: productId,
+                quantity: 1 // This can be modified to handle different quantities
+            }],
+            totalPrice: product.price
         });
 
         await order.save();
-        res.render('user/viewProducts', {  message: "Purchase successful!" });
+        res.render('user/viewProducts', {  message: "Purchase successful!", products: await Product.find() });
     } catch (error) {
-        res.render('user/viewProducts', { error: error.message });
+        console.error(error);
+        res.status(500).send('Error processing your purchase');
     }
 };
-
-
 module.exports = {
     dashboard,
     getProfile,
     updateProfile,
     buyProduct,
     viewProduct,
-    getPurchaseHistory
+    // getPurchaseHistory
 };

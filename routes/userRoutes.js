@@ -5,9 +5,9 @@ const userController = require('../controllers/userController');
 router.get('/dashboard', userController.dashboard);
 router.get('/profile/:id', userController.getProfile);
 router.post('/profile/:id', userController.updateProfile);
-router.get('/purchaseHistory', userController.getPurchaseHistory);
+// router.get('/purchaseHistory', userController.getPurchaseHistory);
 router.get('/viewProducts', userController.viewProduct);
-router.post('/buyProduct', userController.buyProduct);
-
+router.get('/buyProduct/:id', userController.buyProduct);
+router.post('/buyProduct/:id', userController.buyProduct);
 
 module.exports = router;

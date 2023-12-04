@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
     spiciness: {
         type: Number,
         required: false
-    },
+    }
     // productID: {
     //     type: String,
     //     required: true,

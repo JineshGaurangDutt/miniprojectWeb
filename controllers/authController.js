@@ -70,7 +70,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     // Note: JWT logout is usually handled on the client side by removing the token from the client storage.
 
-    res.redirect('/common/login', { message: "User logged out successfully"});
+    res.redirect('/common/login');
 };
 
 module.exports = {

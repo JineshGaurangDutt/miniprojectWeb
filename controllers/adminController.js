@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Product = require('../models/product');
 const Order = require('../models/Order');
+const bcrypt = require('bcrypt');
 
 // Admin Dashboard
 const dashboard = async (req, res) => {
@@ -161,16 +162,10 @@ const salesReport = async (req, res) => {
         const orders = await Order.find({}
             // Add aggregation stages to calculate unitsSold and totalSales for each product
         );
-        let orderList = [];
-        for(let x in orders){
-            orderList.push({
-              user: x.user.name,
-            orderDate: x.orderDate,
-            quantity: x.products.length,
-            totalPrice: x.totalPrice
-          })
+        for(let o of orders){
+            o.quantity= o.products.length
         }
-        res.render('admin/salesReport', {orders: orderList  });
+        res.render('admin/salesReport', { orders });
     } catch (error) {
         res.status(500).send('Server error');
     }
@@ -181,7 +176,8 @@ const userReport = async (req, res) => {
     try {
         // Fetch user data and aggregate it for the report
         // This is a simplified example
-        const users = await User.find().select('name email lastActive').lean();
+        const users = await User.find();
+        // .select('name email totalOrders').lean();
         // Add logic to calculate totalOrders for each user
 
         res.render('admin/userReport', { users });
