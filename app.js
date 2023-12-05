@@ -1,68 +1,65 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const mustacheExpress = require('mustache-express');
 const path = require('path');
-const config = require('./config'); // Import the configuration file
-const auth = require('./utils/auth')
+const config = require('./config'); // Ensure you have your database URI and JWT secret here
 
-// Routes
+// Importing route modules
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const productRoutes = require('./routes/productRoutes');
 
+// Importing JWT middleware
+const { verifyTokenMiddleware } = require('./utils/auth');
+
 const app = express();
 
 // Connect to MongoDB
 mongoose.connect(config.mongoURI, {
-});
+   
+})
+.then(() => console.log("MongoDB successfully connected"))
+.catch(err => console.error("MongoDB connection error: ", err));
 
 // Mustache Templating Engine Setup
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', path.join(__dirname, 'views'));
-app.set('views', __dirname + '/views');
-
-// Set up the directory for partials
-const partialsPath = path.join(__dirname, 'views', 'partials');
-app.set('partials', partialsPath);
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('public'));
-app.use(session({
-  secret: config.sessionSecret,
-  resave: false,
-  saveUninitialized: true,
-}));
-const isAuthenticated = (req,res, next) => {
-    if(req.session.user) next();
-    else res.redirect("/common/login");
+app.use(cookieParser()); // Parse cookies for JWT
+app.use(express.static(path.join(__dirname, 'public')));
 
-}
-// app.use(isAuthenticated);
-
-// Using Routes
+// Routes
 app.use('/auth', authRoutes);
-app.use('/user', isAuthenticated, userRoutes);
-app.use('/admin', isAuthenticated, adminRoutes);
-app.use('/product', isAuthenticated, productRoutes);
+
+// Protected Routes
+app.use('/user', verifyTokenMiddleware, userRoutes);
+app.use('/admin', verifyTokenMiddleware, adminRoutes);
+app.use('/product', verifyTokenMiddleware, productRoutes);
 
 // Home Route
 app.get('/', (req, res) => {
     res.render('home');
 });
 
+// Route to render the login page
 app.get('/common/login', (req, res) => {
-    res.render('common/login');
+    res.render('common/login', {
+        // Add any necessary data for the template
+        title: 'Login'
+    });
 });
 
+// Route to render the registration page
 app.get('/common/register', (req, res) => {
     res.render('common/register', {
-        // Pass any necessary data for the template
+        // Add any necessary data for the template
         title: 'Register'
     });
 });

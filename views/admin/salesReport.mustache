@@ -1,6 +1,36 @@
 {{> layouts/layout}}
 
 <div class="ui container">
+    <h2 class="ui header">Sales Report</h2>
+
+    <h3>Total Sales: ${{totalSales}}</h3>
+    <h3>Total Orders: {{totalOrders}}</h3>
+
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity Sold</th>
+                <th>Total Sales</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each salesByProduct}}
+            <tr>
+                <td>{{@key}}</td>
+                <td>{{this.quantity}}</td>
+                <td>${{this.sales}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+
+
+<!-- {{> layouts/layout}}
+
+<div class="ui container">
   <h2 class="ui header">Sales Report</h2>
   <table class="ui celled table">
     <thead>
@@ -20,4 +50,4 @@
       {{/orders}}
     </tbody>
   </table>
-</div>
+</div> -->
