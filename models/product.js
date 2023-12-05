@@ -18,11 +18,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: false
     }
-    // productID: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // }
+
 });
 
-module.exports = mongoose.model('product', productSchema);
+module.exports = mongoose.model('Product', productSchema);

@@ -142,43 +142,77 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-// Generate Sales Report
 const salesReport = async (req, res) => {
     try {
-        // Fetch all orders
         const orders = await Order.find({}).populate('products.product');
 
-        // Initialize report data
         let totalSales = 0;
-        let totalOrders = orders.length;
         let salesByProduct = {};
 
-        // Process each order
         orders.forEach(order => {
             totalSales += order.totalPrice;
 
-            order.products.forEach(item => {
-                const productName = item.product.name;
-                const salesAmount = item.product.price * item.quantity;
-
-                if (!salesByProduct[productName]) {
-                    salesByProduct[productName] = {
-                        quantity: 0,
-                        sales: 0
-                    };
+            order.products.forEach(({ product, quantity }) => {
+                if (product && product.name) {
+                    if (!salesByProduct[product.name]) {
+                        salesByProduct[product.name] = { quantity: 0, sales: 0 };
+                    }
+                    salesByProduct[product.name].quantity += quantity;
+                    salesByProduct[product.name].sales += product.price * quantity;
                 }
-
-                salesByProduct[productName].quantity += item.quantity;
-                salesByProduct[productName].sales += salesAmount;
             });
         });
 
-        // Render the sales report view with aggregated data
-        res.render('admin/salesReport', { totalSales, totalOrders, salesByProduct });
+        // Convert to array for Mustache
+        const salesByProductArray = Object.entries(salesByProduct).map(([name, data]) => ({
+            name,
+            quantity: data.quantity,
+            sales: data.sales
+        }));
+
+        res.render('admin/salesReport', { totalSales, salesByProduct: salesByProductArray });
     } catch (error) {
+        console.error(error);
         res.status(500).send('Server error');
     }
 };
+// Generate Sales Report
+// const salesReport = async (req, res) => {
+//     try {
+//         // Fetch all orders
+//         const orders = await Order.find({}).populate('products.product');
+
+//         // Initialize report data
+//         let totalSales = 0;
+//         let totalOrders = orders.length;
+//         let salesByProduct = {};
+
+//         // Process each order
+//         orders.forEach(order => {
+//             totalSales += order.totalPrice;
+
+//             order.products.forEach(item => {
+//                 const productName = item.product.name;
+//                 const salesAmount = item.product.price * item.quantity;
+
+//                 if (!salesByProduct[productName]) {
+//                     salesByProduct[productName] = {
+//                         quantity: 0,
+//                         sales: 0
+//                     };
+//                 }
+
+//                 salesByProduct[productName].quantity += item.quantity;
+//                 salesByProduct[productName].sales += salesAmount;
+//             });
+//         });
+
+//         // Render the sales report view with aggregated data
+//         res.render('admin/salesReport', { totalSales, totalOrders, salesByProduct });
+//     } catch (error) {
+//         res.status(500).send('Server error');
+//     }
+// };
 
 // Generate User Report
 const userReport = async (req, res) => {

@@ -4,7 +4,6 @@
     <h2 class="ui header">Sales Report</h2>
 
     <h3>Total Sales: ${{totalSales}}</h3>
-    <h3>Total Orders: {{totalOrders}}</h3>
 
     <table class="ui celled table">
         <thead>
@@ -15,39 +14,14 @@
             </tr>
         </thead>
         <tbody>
-            {{#each salesByProduct}}
+            {{#salesByProduct}}
             <tr>
-                <td>{{@key}}</td>
-                <td>{{this.quantity}}</td>
-                <td>${{this.sales}}</td>
+                <td>{{name}}</td>
+                <td>{{quantity}}</td>
+                <td>${{sales}}</td>
             </tr>
-            {{/each}}
+            {{/salesByProduct}}
         </tbody>
     </table>
 </div>
 
-
-
-<!-- {{> layouts/layout}}
-
-<div class="ui container">
-  <h2 class="ui header">Sales Report</h2>
-  <table class="ui celled table">
-    <thead>
-      <tr>
-        <th>Order Date</th>
-        <th>Quantity</th>
-        <th>Total Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#orders}}
-      <tr>
-        <td>{{orderDate}}</td>
-         <td>{{quantity}}</td>
-        <td>{{totalPrice}}</td>
-      </tr>
-      {{/orders}}
-    </tbody>
-  </table>
-</div> -->
