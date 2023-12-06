@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mustacheExpress = require('mustache-express');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 const config = require('./config'); // Ensure you have your database URI and JWT secret here
 
 // Importing route modules
@@ -19,7 +20,7 @@ const app = express();
 
 // Connect to MongoDB
 mongoose.connect(config.mongoURI, {
-   
+    
 })
 .then(() => console.log("MongoDB successfully connected"))
 .catch(err => console.error("MongoDB connection error: ", err));
@@ -35,6 +36,25 @@ app.use(bodyParser.json());
 app.use(cookieParser()); // Parse cookies for JWT
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Home Route with JWT Check
+app.use((req, res, next) => {
+    const token = req.cookies.authToken; // Assuming JWT token is stored in a cookie named 'authToken'
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, config.jwtSecret);
+            res.locals.isLoggedIn = true;
+            res.locals.dashboardLink = decoded.role === 'admin' ? '/admin/dashboard' : '/user/dashboard';
+        } catch (error) {
+            res.locals.isLoggedIn = false;
+            res.locals.dashboardLink = '/';
+        }
+    } else {
+        res.locals.isLoggedIn = false;
+        res.locals.dashboardLink = '/';
+    }
+    next();
+});
+
 // Routes
 app.use('/auth', authRoutes);
 
@@ -45,13 +65,16 @@ app.use('/product', verifyTokenMiddleware, productRoutes);
 
 // Home Route
 app.get('/', (req, res) => {
-    res.render('home');
+    if (res.locals.isLoggedIn) {
+        res.redirect(res.locals.dashboardLink);
+    } else {
+        res.render('home');
+    }
 });
 
 // Route to render the login page
 app.get('/common/login', (req, res) => {
     res.render('common/login', {
-        // Add any necessary data for the template
         title: 'Login'
     });
 });
@@ -59,14 +82,13 @@ app.get('/common/login', (req, res) => {
 // Route to render the registration page
 app.get('/common/register', (req, res) => {
     res.render('common/register', {
-        // Add any necessary data for the template
         title: 'Register'
     });
 });
-
 
 // Starting the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server is running on port ${port}...`));
 
 module.exports = app;
+
