@@ -1,25 +1,22 @@
+<!-- views/user/purchaseHistory.mustache -->
 {{> layouts/layout}}
 
 <div class="ui container">
-  <h2 class="ui header">Purchase History</h2>
-  <table class="ui celled table">
-    <thead>
-      <tr>
-        <th>Order Date</th>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Total Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#orders}}
-      <tr>
-        <td>{{orderDate}}</td>
-        <td>{{productName}}</td>
-        <td>{{quantity}}</td>
-        <td>{{totalPrice}}</td>
-      </tr>
-      {{/orders}}
-    </tbody>
-  </table>
+    <h2 class="ui header">Purchase History</h2>
+    {{#noOrders}}
+    <p>No purchase history available.</p>
+    {{/noOrders}}
+    {{^noOrders}}
+    {{#orders}}
+    <div class="ui segment">
+        <h3>Order Date: {{orderDate}}</h3>
+        <ul>
+            {{#products}}
+            <li>{{product.name}} - Quantity: {{quantity}}</li>
+            {{/products}}
+        </ul>
+        <p>Total Price: ${{totalPrice}}</p>
+    </div>
+    {{/orders}}
+    {{/noOrders}}
 </div>

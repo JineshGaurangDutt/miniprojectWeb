@@ -22,6 +22,13 @@ const manageUsers = async (req, res) => {
     }
 };
 
+const renderCreateUserForm = (req, res) => {
+    try {
+        res.render('admin/createUser'); // Path to your createUser Mustache template
+    } catch (error) {
+        res.status(500).send('Error rendering user creation form');
+    }
+};
 // Add User
 const createUser = async (req, res) => {
     try {
@@ -190,6 +197,7 @@ const userReport = async (req, res) => {
 module.exports = {
     dashboard,
     manageUsers,
+    renderCreateUserForm,
     createUser,
     editUser,
     editUserPage,

@@ -72,25 +72,37 @@ const viewProduct = async (req, res) => {
 // Buy a Product
 const buyProduct = async (req, res) => {
     try {
-        const productId = req.params.id;
+        const productId = req.params.id; // or req.body.productId based on how you send data
         const product = await Product.findById(productId);
 
         if (!product) {
             return res.status(404).send('Product not found');
         }
 
-        const order = new Order({
-            products: [{
-                product: productId,
-                quantity: 1
-            }],
-            totalPrice: product.price
+        // Logic to handle the purchase, like creating an order
+        const newOrder = new Order({
+            user: req.user.id, // Ensure the user is correctly identified
+            products: [{ product: productId, quantity: 1 }], // Example
+            totalPrice: product.price // Or calculate based on quantity
         });
 
-        await order.save();
+        await newOrder.save();
+
         res.render('user/viewProducts', { message: "Purchase successful!", products: await Product.find() });
     } catch (error) {
         res.status(500).send('Error processing your purchase');
+    }
+};
+
+const purchaseHistory = async (req, res) => {
+    try {
+        const userId = req.user.id; // Get user ID from JWT token
+        const orders = await Order.find({ user: userId }).populate('products.product');
+
+        res.render('user/purchaseHistory', { orders, noOrders: orders.length === 0 });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error retrieving purchase history');
     }
 };
 
@@ -99,5 +111,7 @@ module.exports = {
     getProfile,
     updateProfile,
     viewProduct,
-    buyProduct
+    buyProduct,
+    purchaseHistory
+
 };
