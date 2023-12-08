@@ -45,7 +45,8 @@ const login = async (req, res) => {
         const token = generateToken(user);
 
         // Set token in HTTP-only cookie
-        res.cookie('authToken', token, { httpOnly: true, sameSite: 'Strict' });
+        res.cookie('authToken', token, { httpOnly: true, sameSite: 'Strict', maxAge: 5*60*1000, expires:false });
+
 
         // Redirect based on user role
         if (user.role === 'admin') {
